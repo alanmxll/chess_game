@@ -1,10 +1,3 @@
-require_relative "./bishop.rb"
-require_relative "./knight.rb"
-require_relative "./king.rb"
-require_relative "./pawn.rb"
-require_relative "./queen.rb"
-require_relative "./rook.rb"
-
 class Board
   attr_reader :grid
 
@@ -50,5 +43,10 @@ class Board
     row, column = location
 
     row < grid.length && column < grid.first.length && row >= 0 && column >= 0
+  end
+
+  def empty?(location)
+    row, column = location
+    grid[row][column].nil?
   end
 end

@@ -1,9 +1,5 @@
-class Bishop
-  attr_reader :color
-
-  def initialize(color)
-    @color = color
-  end
+class Bishop < Piece
+  include Slidable
 
   def move_dirs
     [[1, 1], [1, -1], [-1, 1], [-1, -1]]
