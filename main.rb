@@ -1,7 +1,13 @@
 require_relative "./lib/board.rb"
 require_relative "./lib/board_renderer_text.rb"
+require_relative "./lib/invalid_move_error.rb"
+require_relative "./lib/game.rb"
+require_relative "./lib/player.rb"
+require_relative "./lib/pieces.rb"
 
 board = Board.start_chess
-
-text_board = BoardRendererText.new(board)
-puts text_board.render
+game = Game.new(board,
+                Player.new(:black),
+                Player.new(:white),
+                BoardRendererText)
+game.play

@@ -53,10 +53,10 @@ class Board
   def move_piece(start_pos, end_pos)
     piece = self[start_pos]
     if !piece.avaliable_moves.include?(end_pos)
-      raise "End position (#{end_pos}) not in avaliable moves: #{piece.avaliable_moves}"
+      raise InvalidMoveError.new("End position (#{end_pos}) not in avaliable moves: #{piece.avaliable_moves}")
     end
     if !in_bounds?(end_pos)
-      raise "End position not in bounds"
+      raise InvalidMoveError.new("End position not in bounds")
     end
 
     self[start_pos] = nil
