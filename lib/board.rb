@@ -50,17 +50,60 @@ class Board
     grid[row][column].nil?
   end
 
+  def in_check?(color)
+    king = pieces
+      .find { |piece| piece.color == color && piece.is_a?(King) }
+
+    if king.nil?
+      raise "No king found."
+    end
+
+    king_pos = king.location
+
+    pieces.select { |piece| piece.color != color }.each do |piece|
+      if piece.avaliable_moves.include?(king_pos)
+        return true
+      end
+    end
+    false
+  end
+
+  def checkmate?(color)
+    return false if !in_check?(color)
+
+    color_pieces = pieces.select { |piece| piece.color == color }
+    color_pieces.all? { |piece| piece.safe_moves.empty? }
+  end
+
+  def pieces
+    grid.flatten.reject { |piece| piece.nil? }
+  end
+
   def move_piece(start_pos, end_pos)
     piece = self[start_pos]
     if !piece.avaliable_moves.include?(end_pos)
-      raise InvalidMoveError.new("End position (#{end_pos}) not in avaliable moves: #{piece.avaliable_moves}")
+      raise InvalidMoveError.new("End position (#{end_pos}) not in avaliable moves: #{piece.safe_moves}")
     end
     if !in_bounds?(end_pos)
       raise InvalidMoveError.new("End position not in bounds")
     end
 
-    self[start_pos] = nil
-    self[end_pos] = piece
-    piece.location = end_pos
+    move_piece!(start_pos, end_pos)
+  end
+
+  def move_piece!(start_pos, end_pos)
+    self[start_pos], self[end_pos] = nil, self[start_pos]
+    self[end_pos].location = end_pos
+  end
+
+  def dup
+    new_board = Board.new
+
+    pieces.each do |piece|
+      new_piece = piece.class.new(new_board, piece.location, piece.color)
+      new_board[new_piece.location] = new_piece
+    end
+
+    new_board
   end
 end
