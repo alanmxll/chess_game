@@ -1,5 +1,5 @@
 module Slidable
-  def avaliable_moves
+  def available_moves
     moves = []
 
     move_dirs.each do |(dr, dc)|
@@ -10,11 +10,9 @@ module Slidable
         current_c += dc
         loc = [current_r, current_c]
         break if !board.in_bounds?(loc)
-
         if board.empty?(loc)
           moves << loc
         end
-
         if enemy?(loc)
           moves << loc
           break

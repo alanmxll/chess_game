@@ -1,5 +1,5 @@
 module Stepable
-  def avaliable_moves
+  def available_moves
     moves = []
 
     move_dirs.each do |(dr, dc)|

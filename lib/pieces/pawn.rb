@@ -4,10 +4,12 @@ class Pawn < Piece
   end
 
   def at_start?
-    (color == :black && current_r == 1) || (color == :white && current_r == 6)
+    color == :black && current_r == 1 ||
+      color == :white && current_r == 6
   end
 
-  def avaliable_moves
+  def available_moves
+    # move forward 1
     moves = []
 
     one_forward = [current_r + forward_dir, current_c]
@@ -15,11 +17,13 @@ class Pawn < Piece
       moves << one_forward
     end
 
+    # if on the start line, move forward 2
     two_forward = [current_r + (forward_dir * 2), current_c]
     if board.empty?(two_forward) && board.empty?(one_forward) && at_start?
       moves << two_forward
     end
 
+    # if enemy diag
     diag_left = [current_r + forward_dir, current_c + 1]
     diag_right = [current_r + forward_dir, current_c - 1]
     if enemy?(diag_left)
@@ -29,14 +33,10 @@ class Pawn < Piece
       moves << diag_right
     end
 
-    moves.select { |move| board.in_bounds?(move) }
+    moves.select { |m| board.in_bounds?(m) }
   end
 
   def to_s
     color == :black ? "♟" : "♙"
-  end
-
-  def starting_pos?
-    row == 1 || row == 7
   end
 end
